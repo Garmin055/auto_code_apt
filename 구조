@@ -1,0 +1,32 @@
+유저로부터 최종 목표 input
+
+함수들{
+    ai 답변을 타겟 파일에 그대로 저장 ex) 
+        '''
+        path/target.py # 첫줄에 타겟 파일
+        # 코드 시작...
+        '''
+}
+
+
+while:
+    ai 절차 생성
+    ai 이거 맞아?
+        진행해:
+            break
+        다시해:
+            pass
+
+이걸 step.txt 에 추가
+
+
+while:
+    모든 파일 정보 수집
+    step.txt 정보 수집
+    ai 모든 파일, step, 대화 히스토리 모두 비교, 검토 후 이후 진행할 단계 선택
+    진행
+
+    if ai 모든 단계를 완료했는가? and 맞다면:
+        break
+
+모든 파일 검토 후 READEME.txt에 설명과 사용법 정리
