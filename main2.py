@@ -11,6 +11,9 @@ with open(api_key_file, 'r', encoding='utf-8') as file:
     openai.api_key = file.read()
 # 타겟 디렉토리
 target_dir = 'test'
+if not os.path.exists(target_dir):
+    os.makedirs(target_dir)
+os.chdir(target_dir)
 # ChatGPT API 호출 함수
 exeute_gpt_system = f"""
 터미널이 필요할 경우 '[ter]ifconfig' 이런식으로 맨 앞에[ter] 을 작성하여라.
@@ -35,11 +38,14 @@ print(1-1)
 
 이런식으로.
 
-또한 파이썬 str 에 사용하듯이 특수한 문자는 앞에 '를 붙여
+또한 터미널을 사용할 수 있어. 예를들어서
+[ter]ifconfig
+이런식으로
+
 
 또한 작업은 여러 개 동시에 실행 가능
 예를들어 a 폴더를 만들고 그 안에 example.txt 파일을 만든 후 출력할 경우
-[ter]mkdir a
+[ter]mkdir test/a
 
 [edit]a/example.txt
 test
@@ -49,8 +55,8 @@ test
 이런식으로
 아무 말도 하지 말고 명령어만 작성할 것.
 또한 코드를 절대 직접 실행하지 말 것.
-또한 절차를 진행할 때 한번에 하지 말고 현재 필요한 절차를 하나만 차근차근 진행할 것"""
-
+또한 같은 코드를 반복하지 말 것."""
+# 또한 절차를 진행할 때 한번에 하지 말고 현재 필요한 절차를 차근차근 진행할 것.
 bool_gpt_system = """
 모든 질문에는 오직 True 와 False 로만 대답"""
 
@@ -135,7 +141,7 @@ def cmd_exeute(input_string):
         elif current_command == "edit" and section:
             # [edit] 부분 처리: 파일을 생성하고 내용을 작성
             lines = section.split("\n", 1)  # 첫 줄과 나머지 내용으로 분리
-            file_name = target_dir+ "/" + lines[0].strip()  # 파일 이름 추출
+            file_name = lines[0].strip()  # 파일 이름 추출
             content = lines[1] if len(lines) > 1 else ""  # 나머지 내용
 
             # 파일에 내용을 쓰기 (utf-8 인코딩)
@@ -181,9 +187,9 @@ goal = input("최종 목표: ")
 messages.append({"role": "user", "content": goal})
 
 while True:
-    exeute_gpt(f"넌 개발자야. 최종 목표 '{goal}' 를 수행하기 위해 네 능력으로 할 수 있는 선에서 절차를 한글로 짠 후 step.txt 에 저장. 테스트는 내가 할테니 제작 절차만 짜")
+    exeute_gpt(f"넌 개발자야. 최종 목표 '{goal}' 를 수행하기 위해 네 능력으로 할 수 있는 선에서 절차를 한글로 짠 후 step.txt 에 저장. 네가 할 수 있는 절차만 짜. 실행, 테스트, 음악, 디자인 등등은 네가 못하는 거니까 짜지 마")
 
-    step_file = f"{target_dir}/step.txt"
+    step_file = f"step.txt"
     with open(step_file, 'r', encoding='utf-8') as file:
         step = file.read()
 
@@ -195,10 +201,10 @@ while True:
 
 
 while True:
-    con = f"절차는 '{step}' 이며, 현재 프로젝트 폴더는 '{get_files_content(target_dir)}' 이런 상태야."
+    con = f"절차는 '{step}' 이며, 현재 프로젝트 폴더는 '{get_files_content("")}' 이런 상태야."
     if bool_gpt(f"{con} 모든 절차가 완료됐어?") == "True":
         print("[System]: 목표 완수, 프로젝트 종료.")
         break
     exeute_gpt(f"{con} 절차대로 지금 필요한 단계를 진행해 " + "{} 만 있다면 진행상황은 0%라는 뜻이야")
 
-finish_gpt(f"파일 정보는: '{get_files_content(target_dir)}'")
+finish_gpt(f"파일 정보는: '{get_files_content("")}'")
